@@ -1,0 +1,8 @@
+function() {
+ 
+  var time = window.performance.timing;
+  var pageLoadTime = time.loadEventEnd - time.navigationStart;
+  
+  return Math.round(pageLoadTime / 100) / 10;
+  
+}
