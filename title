@@ -1,0 +1,10 @@
+function getTitle(url){
+  var response=  UrlFetchApp.fetch(url);
+  var html = response.getContentText();
+  var regex = /<title>(.*?)<\/title>/i;
+  var match = html.match(regex);
+  if (match) {
+     return match[1]
+} else {
+     return ""; }
+}
