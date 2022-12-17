@@ -1,0 +1,13 @@
+function getCanonicalUrl(url) {
+  var response = UrlFetchApp.fetch(url);
+  var html = response.getContentText();
+
+  var regex = /<link\s+rel=["']canonical["']\s+href=["']([^"']+)["']/i;
+  var match = html.match(regex);
+
+  if (match) {
+    return match[1];
+  } else {
+    return null;
+  }
+}
