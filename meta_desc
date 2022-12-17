@@ -1,0 +1,16 @@
+function getMetaDescription(url) {
+  // Use the UrlFetchApp function to fetch the HTML of the website
+  var response = UrlFetchApp.fetch(url);
+  var html = response.getContentText();
+
+  // Use a regular expression to search for the meta description in the HTML
+  var regex = /<meta\s+name=["']description["']\s+content=["']([^"']+)["']/i;
+  var match = html.match(regex);
+
+  // If a match was found, return the meta description
+  if (match) {
+    return match[1];
+  } else {
+    return null;
+  }
+}
