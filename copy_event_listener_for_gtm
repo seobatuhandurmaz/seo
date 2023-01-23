@@ -1,0 +1,7 @@
+document.addEventListener('copy', function(e) {
+  // Get the copied text
+  var copiedText = window.getSelection().toString();
+
+  // Perform your action here, for example, track the copied text in Google Tag Manager
+  dataLayer.push({'event': 'copy', 'copiedText': copiedText});
+});
