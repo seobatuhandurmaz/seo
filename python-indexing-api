@@ -1,0 +1,43 @@
+import google.auth
+from google.auth.transport.requests import AuthorizedSession
+from google.oauth2 import service_account
+import requests
+import csv
+import json
+
+# Kullanıcıdan Service Account JSON dosyasının yolunu al / Get path to Service Account JSON file from user
+service_account_path = input("Enter the path to your service account JSON file: ")
+
+# Kullanıcıdan işlem türünü al  / Get transaction type from user
+operation_type = input("Enter the operation type (PUBLISH or DELETED): ").upper()
+
+# İşlem türüne göre notification type belirle / Determine notification type according to transaction type
+notification_type = "URL_UPDATED" if operation_type == "PUBLISH" else "URL_DELETED"
+
+# Kullanıcıdan CSV dosyasının yolunu al /  Get path to CSV file from user
+csv_file_path = input("Enter the path to your CSV file with URLs: ")
+
+# Service account ile kimlik doğrulaması yap ve AuthorizedSession oluştur / Authenticate with service account and create AuthorizedSession
+credentials = service_account.Credentials.from_service_account_file(
+        service_account_path, scopes=['https://www.googleapis.com/auth/indexing'])
+authed_session = AuthorizedSession(credentials)
+
+# API URL
+API_URL = 'https://indexing.googleapis.com/v3/urlNotifications:publish'
+
+# URL'leri işle ve API'ye gönder / Process URLs and send to API
+with open(csv_file_path, mode='r') as file:
+    reader = csv.reader(file)
+    for row in reader:
+        url = row[0]
+        # API isteği oluştur
+        content = {
+            'url': url,
+            'type': notification_type
+        }
+        # API'ye istek gönder / Create API request
+        response = authed_session.post(API_URL, json=content)
+        # Yanıtı JSON olarak ayrıştır / Parse response as JSON
+        response_json = response.json()
+        # Gerekli bilgileri yazdır / Print required information 
+        print(f"URL: {url}, Status: {response.status_code}, Type: {response_json.get('urlNotificationMetadata', {}).get('latestUpdate', {}).get('type', 'N/A')}, Time: {response_json.get('urlNotificationMetadata', {}).get('latestUpdate', {}).get('notifyTime', 'N/A')}")
