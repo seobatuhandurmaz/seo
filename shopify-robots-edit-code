@@ -1,0 +1,25 @@
+{% for group in robots.default_groups %}
+  {{- group.user_agent }}
+
+  {%- for rule in group.rules -%}
+    {{ rule }}
+  {%- endfor -%}
+
+  {%- if group.user_agent.value == '*' -%}
+{{ 'Disallow: /collections/all*' }}
+{{ 'Disallow: /collections/vendors*?*q=*' }}
+{{ 'Disallow: /collections/types*?*q=*' }}
+{{ 'Disallow: /collections/*?*constraint*' }}
+{{ 'Disallow: /collections/*/*' }}
+{{ 'Disallow: /collections/*?*filter*' }}
+{{ 'Disallow: /collections/*?*pf_*' }}
+{{ 'Disallow: /collections/*?*view*' }}
+{{ 'Disallow: /collections/*?*grid_list*' }}
+{{ 'Disallow: /collections/?page=*' }}
+{{ 'Disallow: /blogs/*/tagged/*' }}
+  {%- endif -%}
+
+  {%- if group.sitemap != blank -%}
+      {{ group.sitemap }}
+  {%- endif -%}
+{% endfor %}
