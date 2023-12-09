@@ -23,3 +23,19 @@
       {{ group.sitemap }}
   {%- endif -%}
 {% endfor %}
+
+
+
+---- for remove
+
+{%- if group.user_agent.value == 'adsbot-google' -%}  
+    {%- for rule in group.rules -%}
+      {%- unless rule.directive == 'Disallow' and rule.value == '/checkouts/' -%}
+        {{ rule }}
+      {%- endunless -%}
+    {%- endfor -%}
+  {%- else -%}
+    {%- for rule in group.rules -%}
+      {{ rule }}
+    {%- endfor -%}
+  {%- endif -%}
