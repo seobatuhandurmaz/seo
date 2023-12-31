@@ -1,0 +1,75 @@
+{% assign whatsappNumber = "917202997997" %}
+{% assign Message = "Hello Meetanshi, I need your help!" %}
+{% assign buttonPosition = "right" %}
+{% assign buttonColor = "#25d366" %}
+{% assign closeButtonColor = "black" %}
+{% assign ctaText = "WhatsApp us" %}
+{% assign marginBottom = "1.25em" %}
+{% assign marginLeft = "1.25em" %}
+{% assign marginRight = "1.25em" %}
+{% assign cornerRadius = "2.5em" %}
+{% assign zIndex = "999999" %}
+{% assign showCloseButton = true %}  {# Set this to false to hide the close button #}
+ 
+{% if buttonPosition == "left" %}
+  {% assign positionStyle = "left: 0;" %}
+{% else %}
+  {% assign positionStyle = "right: 0;" %}
+{% endif %}
+ 
+<style>
+  .whatsapp-button-container {
+    position: fixed;
+    bottom: {{ marginBottom }};
+    {{ positionStyle }}
+    margin: 0 {{ marginLeft }} {{ marginRight }};
+    z-index: {{ zIndex }};
+    cursor: pointer;
+  }
+ 
+  .whatsapp-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.625em;
+    background-color: {{ buttonColor }};
+    border-radius: {{ cornerRadius }};
+    text-decoration: none;
+    font-weight: bold;
+    color: #FFFFFF;
+  }
+ 
+  .whatsapp-button img {
+    height: 2em;
+    width: auto;
+    margin-right: 0.3125em;
+  }
+ 
+  .close-button {
+    position: absolute;
+    top: -0.625em;
+    right: -0.625em;
+    display: {{ showCloseButton | default: true | append: "none" }};
+    background-color: red;
+    color: white;
+    width: 1.25em;
+    height: 1.25em;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 1.25em;
+    font-weight: bold;
+    cursor: pointer;
+  }
+</style>
+<script>
+  function hideWhatsAppButton() {
+    document.querySelector('.whatsapp-button-container').style.display = 'none';
+  }
+</script>
+<div class="whatsapp-button-container">
+ 
+<a class="whatsapp-button" href="https://api.whatsapp.com/send?phone={{ whatsappNumber }}&amp;text={{ Message | url_encode }}"> <img src="https://meetanshi.com/blog/wp-content/uploads/2023/08/whatsapp-logo-example.png" alt="WhatsApp Logo" /> Whatsapp us! </a> {% if showCloseButton %}
+<div class="close-button">×</div>
+{% endif %}
+ 
+</div>
